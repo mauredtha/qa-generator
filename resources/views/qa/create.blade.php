@@ -22,6 +22,7 @@
           <div class="form-group w-25 ">
               <label class="visually-hidden" for="SourceFile">Source File</label>
               <input type="file" class="form-control" id="SourceFile" name="sourceFile">
+              <span class="text-danger">{{ $errors->first('sourceFile') }}</span>
           </div>
           <div class="form-group "><br></div>
           <div class="form-group ">
