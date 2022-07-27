@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Models\Generator;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Storage;
@@ -15,13 +18,17 @@ class QaGeneratorsController extends Controller
 {
     public function showFormGenerate()
     {
-        return view('qa.create');
+        $courses = Course::orderBy('name', 'ASC')->get();
+        
+        return view('qa.create')->with('courses', $courses);
     }
 
     public function store(Request $request)
     {
-        //dd($request->sourceText);
-        
+        //dd($request->courses);
+
+        $courses = Course::orderBy('name', 'ASC')->get();
+
         if(isset($request->sourceText)){
             Storage::disk('local')->put('Asli.txt', $request->sourceText);
         }else {
@@ -63,10 +70,19 @@ class QaGeneratorsController extends Controller
             $qs_aw = substr($value, strpos($value, "QS"), strpos($value, "AW"));
             //print_r($qs_aw);
             $qs = substr($qs_aw, 0, strpos($qs_aw, "AW"));
-            $data[$key]['question'] = $qs;
+            $data[$key]['questions'] = $qs;
             $data[$key]['answer'] = substr($qs_aw, strlen($qs));
+            $data[$key]['course_id'] = $request->courses;
             //$question = explode('\tQS\t', $value);
             //print_r($data);exit;
+
+            $generator = new Generator;
+            $generator->course_id = $request->courses;
+            $generator->source = $source;
+            $generator->questions = $qs;
+            $generator->answer = substr($qs_aw, strlen($qs));
+            
+            $generator->save();
             
         }
         
@@ -75,7 +91,8 @@ class QaGeneratorsController extends Controller
         
 
         return View::make('qa.create')
-               ->with('data', $data);
+            ->with('data', $data)
+            ->with('courses', $courses);
 
     }
 }

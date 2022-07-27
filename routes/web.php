@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\QaGeneratorsController;
+use App\Http\Controllers\CoursesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +23,6 @@ use App\Http\Controllers\QaGeneratorsController;
 //Route::get('/', 'QaGeneratorsController@showFormGenerate')->name('create');
 Route::get('/', [QaGeneratorsController::class, 'showFormGenerate'])->name('create');
 Route::post('/generates', [QaGeneratorsController::class, 'store']);
+
+Route::resource('courses', CoursesController::class);
 

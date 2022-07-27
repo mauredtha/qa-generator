@@ -16,6 +16,15 @@
     {{ csrf_field() }}
       <div class="border p-4">
           <div class="form-group">
+            <select class="form-select" aria-label="select courses" id="Courses" name="courses">
+            <option value="0">Select Courses</option>
+            @foreach ($courses as $key=>$course)
+            <option value="{{$course->id}}">{{$course->name}}</option>
+            @endforeach
+            </select>
+          </div>
+          <div class="form-group "> <br></div>
+          <div class="form-group">
               <textarea class="form-control" id="SourceText" name="sourceText" placeholder="Input your sentences or paragraf here..." ></textarea>
           </div>
           <div class="form-group "> Or</div>
@@ -48,7 +57,7 @@
     <tr>
       <th scope="row">{{ $no }}</th>
       <td>{{ $item['source'] }}</td>
-      <td>{{ $item['question'] }}</td>
+      <td>{{ $item['questions'] }}</td>
       <td>{{ $item['answer'] }}</td>
     </tr>
   <?php $no++; ?>
